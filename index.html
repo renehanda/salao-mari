@@ -79,6 +79,13 @@
       font-size: .9rem;
     }
 
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
     .reset-button {
       min-height: 44px;
       padding: 9px 16px;
@@ -91,6 +98,85 @@
     }
 
     .reset-button:hover { background: var(--soft-pink); }
+
+    .waiting-room {
+      padding: clamp(20px, 4vw, 38px);
+      background:
+        radial-gradient(ellipse at 10% 10%, #fff0f7 0, transparent 35%),
+        radial-gradient(ellipse at 90% 95%, #eeeaff 0, transparent 35%),
+        #ffffffdc;
+    }
+
+    .room-intro { margin-bottom: 25px; text-align: center; }
+    .room-intro h2 { margin: 0; color: #a6537a; font-size: clamp(1.45rem, 4vw, 2.1rem); }
+    .room-intro p { margin: 9px 0 0; color: #9d8298; font-size: 1rem; }
+
+    .character-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .character-choice {
+      display: flex;
+      min-width: 0;
+      min-height: 230px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 9px;
+      border: 3px solid #f0e5ef;
+      border-radius: 24px;
+      background: #fffafd;
+      color: var(--ink);
+      cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .character-choice:hover { transform: translateY(-3px); }
+    .character-choice[aria-pressed="true"] {
+      border-color: #e98bb0;
+      background: #fff2f7;
+      box-shadow: 0 5px 0 #f8d8e4;
+    }
+
+    .avatar {
+      width: min(100%, 130px);
+      height: auto;
+      overflow: visible;
+      filter: drop-shadow(0 6px 5px #ad77932b);
+    }
+
+    .avatar-fur { fill: var(--avatar-fur); }
+    .avatar-ear { fill: var(--avatar-ear); }
+    .avatar-hair { fill: var(--avatar-hair); }
+    .avatar-dress { fill: var(--avatar-dress); }
+    .character-choice strong { color: #87536f; font-size: 1.1rem; }
+    .character-choice small { color: #a38a9b; font-size: .77rem; text-align: center; }
+
+    .room-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .start-button {
+      min-height: 56px;
+      padding: 13px 28px;
+      border: 3px solid #fff;
+      border-radius: 20px;
+      background: #e878a2;
+      box-shadow: 0 5px 0 #d85f8c, 0 9px 18px #d85f8c30;
+      color: #fff;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 900;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .start-button:hover { transform: translateY(-2px); box-shadow: 0 7px 0 #d85f8c, 0 11px 18px #d85f8c30; }
+    .start-button:active { transform: translateY(2px); box-shadow: 0 3px 0 #d85f8c; }
 
     .salon {
       display: grid;
@@ -217,11 +303,24 @@
     }
 
     .hair-back, .hair-front { transition: opacity .2s ease; }
-    .hair-back path, .hair-front path { fill: var(--hair-color, #9a5b48); }
+    .hair-back path:not(.hair-accent):not(.braid), .hair-back circle:not(.hair-accent), .hair-front path:not(.hair-accent) { fill: var(--hair-color, #9a5b48); }
+    .hair-back .braid { fill: none; stroke: var(--hair-color, #9a5b48); stroke-width: 17; stroke-linecap: round; }
+    .hair-back .braid-highlight { fill: none; stroke: var(--hair-light, #c98770); stroke-width: 5; stroke-linecap: round; }
     .hair-accent { fill: var(--hair-light, #c98770); }
-    .eyes { fill: #60485c; }
+    .character-fur, .cat-ear { fill: var(--fur-color, #fffdfd); }
+    .cat-ear-inner { fill: var(--ear-color, #f7b4c8); }
+    .character-dress { fill: var(--dress-color, #f7a7c4); }
+    .dress-detail { fill: var(--dress-detail-color, #fff2f7); }
+    .face-blush { fill: var(--blush-color, #ffc0ce); }
+    .face-nose { fill: var(--nose-color, #ef91a9); }
+    .eyes { fill: var(--eye-color, #60485c); }
+    #hair-accessory path { fill: var(--bow-color, #ffcf67) !important; }
+    #hair-accessory circle { fill: #fff5c8; }
     .nail { fill: var(--nail-color, #ff8fae); transition: fill .2s ease; }
-    .nail-decoration { fill: var(--nail-decoration, #fff2a8); }
+    .nail { cursor: pointer; }
+    .nail.is-selected { stroke: #986885; stroke-width: 2.5; filter: drop-shadow(0 0 2px #fff); }
+    .nail-decoration-group { pointer-events: none; }
+    .nail-decoration { pointer-events: none; }
 
     .speech {
       min-height: 45px;
@@ -267,6 +366,38 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
+
+    .nail-picker {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 7px;
+    }
+
+    .nail-pick {
+      display: flex;
+      min-height: 52px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      padding: 4px 2px;
+      border: 2px solid #f1e6ef;
+      border-radius: 14px;
+      background: #fff;
+      color: #755c71;
+      cursor: pointer;
+      font-size: .72rem;
+      font-weight: 800;
+    }
+
+    .nail-pick[aria-pressed="true"] {
+      border-color: #e98bb0;
+      background: #fff2f7;
+      box-shadow: 0 2px 0 #f8d8e4;
+    }
+
+    .nail-pick span:first-child { font-size: 18px; }
+    .nail-pick:hover { transform: translateY(-1px); }
 
     .choice {
       display: flex;
@@ -339,6 +470,7 @@
     }
 
     @media (max-width: 820px) {
+      .character-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .salon { grid-template-columns: 165px minmax(0, 1fr); }
       .stage { grid-column: 2; grid-row: 1 / span 2; min-height: 570px; }
       .menu { grid-column: 1; }
@@ -348,9 +480,21 @@
 
     @media (max-width: 590px) {
       .app { padding: 12px 12px 20px; }
+      header { align-items: flex-start; }
+      .header-actions { gap: 5px; }
       .brand-mark { width: 45px; height: 45px; border-radius: 15px; }
       .subtitle { font-size: .76rem; }
-      .reset-button { min-height: 40px; padding: 7px 10px; font-size: .82rem; }
+      .reset-button { min-height: 40px; padding: 7px 9px; font-size: .76rem; }
+      .waiting-room { padding: 20px 14px; }
+      .room-intro { margin-bottom: 17px; }
+      .room-intro p { font-size: .88rem; }
+      .character-grid { gap: 9px; }
+      .character-choice { min-height: 185px; padding: 10px 5px; border-radius: 19px; }
+      .avatar { width: min(100%, 105px); }
+      .character-choice strong { font-size: 1rem; }
+      .character-choice small { font-size: .7rem; }
+      .room-actions { margin-top: 19px; }
+      .start-button { min-height: 52px; padding: 11px 20px; font-size: 1rem; }
       .salon { grid-template-columns: 1fr; gap: 12px; }
       .menu { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px; }
       .menu .eyebrow { grid-column: 1 / -1; margin: 0 0 0 3px; }
@@ -380,10 +524,81 @@
           <p class="subtitle">Um salão fofinho para brincar!</p>
         </div>
       </div>
-      <button class="reset-button" id="reset" type="button">↻ Começar de novo</button>
+      <div class="header-actions">
+        <button class="reset-button" id="change-character" type="button" hidden>🐾 Trocar personagem</button>
+        <button class="reset-button" id="reset" type="button">↻ Começar de novo</button>
+      </div>
     </header>
 
-    <main class="salon">
+    <section class="waiting-room card" id="waiting-room" aria-labelledby="room-title">
+      <div class="room-intro">
+        <h2 id="room-title">Quem vai ao salão hoje?</h2>
+        <p>Escolha uma amiga para brincar de cabelo e unhas!</p>
+      </div>
+      <div class="character-grid" id="character-picker" aria-label="Escolha uma personagem">
+        <button class="character-choice" type="button" data-character="lili" aria-pressed="true" style="--avatar-fur:#fffdfd;--avatar-ear:#f7b4c8;--avatar-hair:#9a5b48;--avatar-dress:#f7a7c4">
+          <svg class="avatar" viewBox="0 0 128 120" role="img" aria-label="Lili, gatinha de pelo branquinho e cabelo castanho">
+            <path d="M37 43 26 6 56 28 M91 43 102 6 72 28" class="avatar-fur" stroke="#edcbd9" stroke-width="3" stroke-linejoin="round"/>
+            <path d="m35 31-4-17 15 14m40 3 4-17-15 14" class="avatar-ear"/>
+            <path d="M28 100Q31 77 64 78q33-1 36 22v20H28Z" class="avatar-dress"/>
+            <circle cx="64" cy="56" r="37" class="avatar-fur" stroke="#edcbd9" stroke-width="3"/>
+            <path d="M29 53Q26 18 61 19q33-2 38 29-14-9-27-2-18 8-30-3-5 8-13 10Z" class="avatar-hair"/>
+            <ellipse cx="51" cy="58" rx="2.5" ry="4" fill="#60485c"/><ellipse cx="76" cy="58" rx="2.5" ry="4" fill="#60485c"/>
+            <ellipse cx="64" cy="67" rx="3.2" ry="2.4" fill="#ef91a9"/>
+            <path d="M83 32q-7-8-10 0-1 7 8 9 9-2 8-9-2-8-6 0Z" fill="#ffcf67"/>
+          </svg>
+          <strong>Lili</strong><small>Adora os brilhinhos</small>
+        </button>
+        <button class="character-choice" type="button" data-character="bia" aria-pressed="false" style="--avatar-fur:#b87953;--avatar-ear:#e8a487;--avatar-hair:#352b35;--avatar-dress:#83c9bd">
+          <svg class="avatar" viewBox="0 0 128 120" role="img" aria-label="Bia, gatinha de pelo caramelo e cabelos cacheados">
+            <path d="M37 43 26 6 56 28 M91 43 102 6 72 28" class="avatar-fur" stroke="#edcbd9" stroke-width="3" stroke-linejoin="round"/>
+            <path d="m35 31-4-17 15 14m40 3 4-17-15 14" class="avatar-ear"/>
+            <path d="M28 100Q31 77 64 78q33-1 36 22v20H28Z" class="avatar-dress"/>
+            <circle cx="64" cy="56" r="37" class="avatar-fur" stroke="#9b6959" stroke-width="3"/>
+            <circle cx="39" cy="33" r="13" class="avatar-hair"/><circle cx="55" cy="23" r="13" class="avatar-hair"/><circle cx="72" cy="23" r="13" class="avatar-hair"/><circle cx="89" cy="35" r="13" class="avatar-hair"/>
+            <path d="M31 48Q31 31 48 30q25-10 47 7l4 13q-18-10-31-1-19 10-37-1Z" class="avatar-hair"/>
+            <ellipse cx="51" cy="58" rx="2.5" ry="4" fill="#352b35"/><ellipse cx="76" cy="58" rx="2.5" ry="4" fill="#352b35"/>
+            <ellipse cx="64" cy="67" rx="3.2" ry="2.4" fill="#de927f"/>
+            <path d="M83 32q-7-8-10 0-1 7 8 9 9-2 8-9-2-8-6 0Z" fill="#f1a86c"/>
+          </svg>
+          <strong>Bia</strong><small>Gosta dos cachinhos</small>
+        </button>
+        <button class="character-choice" type="button" data-character="nina" aria-pressed="false" style="--avatar-fur:#f1d3b8;--avatar-ear:#e9a9ba;--avatar-hair:#8e72bd;--avatar-dress:#a997e6">
+          <svg class="avatar" viewBox="0 0 128 120" role="img" aria-label="Nina, gatinha de pelo pêssego e cabelo lilás">
+            <path d="M37 43 26 6 56 28 M91 43 102 6 72 28" class="avatar-fur" stroke="#dfbfaf" stroke-width="3" stroke-linejoin="round"/>
+            <path d="m35 31-4-17 15 14m40 3 4-17-15 14" class="avatar-ear"/>
+            <path d="M28 100Q31 77 64 78q33-1 36 22v20H28Z" class="avatar-dress"/>
+            <circle cx="64" cy="56" r="37" class="avatar-fur" stroke="#dfbfaf" stroke-width="3"/>
+            <circle cx="34" cy="40" r="11" class="avatar-hair"/><circle cx="94" cy="40" r="11" class="avatar-hair"/>
+            <path d="M31 48Q29 20 62 19q34-2 38 31-14-9-27-2-18 8-30-3-5 8-12 10Z" class="avatar-hair"/>
+            <path d="m29 38 8-9 8 9-8 8Zm51 0 8-9 8 9-8 8Z" fill="#f7b4d1"/>
+            <ellipse cx="51" cy="58" rx="2.5" ry="4" fill="#564879"/><ellipse cx="76" cy="58" rx="2.5" ry="4" fill="#564879"/>
+            <ellipse cx="64" cy="67" rx="3.2" ry="2.4" fill="#e59bad"/>
+            <path d="M83 32q-7-8-10 0-1 7 8 9 9-2 8-9-2-8-6 0Z" fill="#e58ab0"/>
+          </svg>
+          <strong>Nina</strong><small>Ama as maria-chiquinhas</small>
+        </button>
+        <button class="character-choice" type="button" data-character="mel" aria-pressed="false" style="--avatar-fur:#e2dfec;--avatar-ear:#bba9db;--avatar-hair:#d48a44;--avatar-dress:#83c9a7">
+          <svg class="avatar" viewBox="0 0 128 120" role="img" aria-label="Mel, gatinha de pelo lilás e cabelo dourado">
+            <path d="M37 43 26 6 56 28 M91 43 102 6 72 28" class="avatar-fur" stroke="#c8bddc" stroke-width="3" stroke-linejoin="round"/>
+            <path d="m35 31-4-17 15 14m40 3 4-17-15 14" class="avatar-ear"/>
+            <path d="M28 100Q31 77 64 78q33-1 36 22v20H28Z" class="avatar-dress"/>
+            <circle cx="64" cy="56" r="37" class="avatar-fur" stroke="#c8bddc" stroke-width="3"/>
+            <path d="M29 51Q25 20 58 19q32-4 41 26-18-8-28 3-13 12-28 1-6 4-14 2Z" class="avatar-hair"/>
+            <circle cx="72" cy="23" r="15" class="avatar-hair"/>
+            <ellipse cx="51" cy="58" rx="2.5" ry="4" fill="#514768"/><ellipse cx="76" cy="58" rx="2.5" ry="4" fill="#514768"/>
+            <ellipse cx="64" cy="67" rx="3.2" ry="2.4" fill="#e49caf"/>
+            <path d="M83 32q-7-8-10 0-1 7 8 9 9-2 8-9-2-8-6 0Z" fill="#ffcf67"/>
+          </svg>
+          <strong>Mel</strong><small>É apaixonada por flores</small>
+        </button>
+      </div>
+      <div class="room-actions">
+        <button class="start-button" id="start-salon" type="button">Escolher personagem 💖</button>
+      </div>
+    </section>
+
+    <main class="salon" id="salon" hidden>
       <nav class="menu card" aria-label="Escolha uma atividade">
         <p class="eyebrow">Vamos brincar de...</p>
         <button class="tab" type="button" data-mode="hair" aria-pressed="true">
@@ -396,25 +611,30 @@
         </button>
       </nav>
 
-      <section class="stage card" aria-label="Lili no salão">
+      <section class="stage card" id="salon-stage" aria-label="Personagem no salão">
         <div class="stage-heading"><span aria-hidden="true">✿</span><span id="stage-title">Dia de cuidar do cabelo!</span><span aria-hidden="true">✿</span></div>
         <div class="art-wrap">
           <svg class="character" viewBox="0 0 360 420" role="img" aria-labelledby="character-title character-description">
             <title id="character-title">Lili, a gatinha do salão</title>
             <desc id="character-description">Uma gatinha sorridente com penteado e patinhas decoradas.</desc>
             <ellipse cx="180" cy="385" rx="122" ry="18" fill="#e8c8d9" opacity=".45"/>
-            <path d="M103 258 Q180 225 257 258 L284 366 Q180 403 76 366Z" fill="#f7a7c4"/>
-            <path d="M131 262 Q180 291 229 262 L218 306 Q180 324 142 306Z" fill="#fff2f7"/>
+            <path d="M103 258 Q180 225 257 258 L284 366 Q180 403 76 366Z" class="character-dress"/>
+            <path d="M131 262 Q180 291 229 262 L218 306 Q180 324 142 306Z" class="dress-detail"/>
             <path d="M116 331 Q91 313 77 331 Q65 348 84 366 Q100 381 133 366 L147 349Z" fill="#fffdfd" stroke="#edcbd9" stroke-width="3"/>
             <path d="M244 331 Q269 313 283 331 Q295 348 276 366 Q260 381 227 366 L213 349Z" fill="#fffdfd" stroke="#edcbd9" stroke-width="3"/>
-            <path d="M99 343 Q107 337 114 343 L112 354 Q106 359 100 354Z" class="nail"/>
-            <path d="M115 350 Q123 345 129 351 L126 361 Q120 365 115 360Z" class="nail"/>
-            <path d="M85 350 Q92 345 98 350 L96 360 Q90 364 85 359Z" class="nail"/>
-            <path d="M261 343 Q253 337 246 343 L248 354 Q254 359 260 354Z" class="nail"/>
-            <path d="M245 350 Q237 345 231 351 L234 361 Q240 365 245 360Z" class="nail"/>
-            <path d="M275 350 Q268 345 262 350 L264 360 Q270 364 275 359Z" class="nail"/>
+            <path d="M99 343 Q107 337 114 343 L112 354 Q106 359 100 354Z" class="nail" data-nail-index="0"/>
+            <path d="M115 350 Q123 345 129 351 L126 361 Q120 365 115 360Z" class="nail" data-nail-index="1"/>
+            <path d="M85 350 Q92 345 98 350 L96 360 Q90 364 85 359Z" class="nail" data-nail-index="2"/>
+            <path d="M261 343 Q253 337 246 343 L248 354 Q254 359 260 354Z" class="nail" data-nail-index="3"/>
+            <path d="M245 350 Q237 345 231 351 L234 361 Q240 365 245 360Z" class="nail" data-nail-index="4"/>
+            <path d="M275 350 Q268 345 262 350 L264 360 Q270 364 275 359Z" class="nail" data-nail-index="5"/>
             <g class="nail-decoration-group">
-              <path d="M108 345 L109 348 L112 349 L109 350 L108 353 L107 350 L104 349 L107 348Z M122 352 L123 355 L126 356 L123 357 L122 360 L121 357 L118 356 L121 355Z M91 351 L92 354 L95 355 L92 356 L91 359 L90 356 L87 355 L90 354Z M252 345 L253 348 L256 349 L253 350 L252 353 L251 350 L248 349 L251 348Z M238 352 L239 355 L242 356 L239 357 L238 360 L237 357 L234 356 L237 355Z M269 351 L270 354 L273 355 L270 356 L269 359 L268 356 L265 355 L268 354Z" class="nail-decoration"/>
+              <g data-nail-decoration="0"><path d="M108 345 L109 348 L112 349 L109 350 L108 353 L107 350 L104 349 L107 348Z" class="nail-decoration"/></g>
+              <g data-nail-decoration="1"><path d="M122 352 L123 355 L126 356 L123 357 L122 360 L121 357 L118 356 L121 355Z" class="nail-decoration"/></g>
+              <g data-nail-decoration="2"><path d="M91 351 L92 354 L95 355 L92 356 L91 359 L90 356 L87 355 L90 354Z" class="nail-decoration"/></g>
+              <g data-nail-decoration="3"><path d="M252 345 L253 348 L256 349 L253 350 L252 353 L251 350 L248 349 L251 348Z" class="nail-decoration"/></g>
+              <g data-nail-decoration="4"><path d="M238 352 L239 355 L242 356 L239 357 L238 360 L237 357 L234 356 L237 355Z" class="nail-decoration"/></g>
+              <g data-nail-decoration="5"><path d="M269 351 L270 354 L273 355 L270 356 L269 359 L268 356 L265 355 L268 354Z" class="nail-decoration"/></g>
             </g>
 
             <g class="hair-back" id="hair-back">
@@ -422,21 +642,21 @@
               <path d="M92 80 Q109 31 142 41 Q123 73 123 111Z" class="hair-accent"/>
               <path d="M246 52 Q282 67 284 111 Q265 97 248 104Z" class="hair-accent"/>
             </g>
-            <path d="M104 105 L91 30 Q90 20 100 27 L156 70Z" fill="#fffdfd" stroke="#edcbd9" stroke-width="4" stroke-linejoin="round"/>
-            <path d="M256 105 L269 30 Q270 20 260 27 L204 70Z" fill="#fffdfd" stroke="#edcbd9" stroke-width="4" stroke-linejoin="round"/>
-            <path d="M106 80 L101 46 L132 72Z" fill="#f7b4c8"/>
-            <path d="M254 80 L259 46 L228 72Z" fill="#f7b4c8"/>
-            <ellipse cx="180" cy="156" rx="93" ry="94" fill="#fffdfd" stroke="#edcbd9" stroke-width="4"/>
+            <path d="M104 105 L91 30 Q90 20 100 27 L156 70Z" class="cat-ear" stroke="#edcbd9" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M256 105 L269 30 Q270 20 260 27 L204 70Z" class="cat-ear" stroke="#edcbd9" stroke-width="4" stroke-linejoin="round"/>
+            <path d="M106 80 L101 46 L132 72Z" class="cat-ear-inner"/>
+            <path d="M254 80 L259 46 L228 72Z" class="cat-ear-inner"/>
+            <ellipse cx="180" cy="156" rx="93" ry="94" class="character-fur" stroke="#edcbd9" stroke-width="4"/>
             <g class="hair-front" id="hair-front">
               <path d="M91 133 Q86 54 151 45 Q231 24 272 93 Q247 80 225 94 Q193 109 165 90 Q132 125 91 133Z"/>
               <path d="M105 99 Q125 55 163 53 Q137 78 135 106Z" class="hair-accent"/>
             </g>
             <ellipse cx="145" cy="158" rx="6" ry="9" class="eyes"/>
             <ellipse cx="215" cy="158" rx="6" ry="9" class="eyes"/>
-            <ellipse cx="180" cy="177" rx="7" ry="5" fill="#ef91a9"/>
+            <ellipse cx="180" cy="177" rx="7" ry="5" class="face-nose"/>
             <path d="M180 182 Q174 193 164 188 M180 182 Q186 193 196 188" fill="none" stroke="#876878" stroke-width="3" stroke-linecap="round"/>
-            <ellipse cx="126" cy="181" rx="12" ry="6" fill="#ffc0ce" opacity=".7"/>
-            <ellipse cx="234" cy="181" rx="12" ry="6" fill="#ffc0ce" opacity=".7"/>
+            <ellipse cx="126" cy="181" rx="12" ry="6" class="face-blush" opacity=".7"/>
+            <ellipse cx="234" cy="181" rx="12" ry="6" class="face-blush" opacity=".7"/>
             <g id="hair-accessory">
               <path d="M239 70 Q224 57 221 70 Q220 80 239 84 Q258 80 257 70 Q254 57 239 70Z" fill="#ffcf67" stroke="#e8a94d" stroke-width="2"/>
               <circle cx="239" cy="73" r="4" fill="#fff5c8"/>
@@ -455,9 +675,13 @@
             <p class="group-title">Penteado</p>
             <div class="choices" id="hair-styles">
               <button class="choice" type="button" data-style="long" aria-pressed="true"><span class="emoji">〰️</span><span>Comprido</span></button>
-              <button class="choice" type="button" data-style="bob" aria-pressed="false"><span class="emoji">💇</span><span curtinho>Curtinho</span></button>
+              <button class="choice" type="button" data-style="bob" aria-pressed="false"><span class="emoji">💇</span><span>Curtinho</span></button>
               <button class="choice" type="button" data-style="pigtails" aria-pressed="false"><span class="emoji">🎀</span><span>Maria-chiquinha</span></button>
               <button class="choice" type="button" data-style="bun" aria-pressed="false"><span class="emoji">🌼</span><span>Coquinho</span></button>
+              <button class="choice" type="button" data-style="bangs" data-style-name="com franjinha" aria-pressed="false"><span class="emoji">🌸</span><span>Franjinha</span></button>
+              <button class="choice" type="button" data-style="curls" data-style-name="cacheado" aria-pressed="false"><span class="emoji">🌀</span><span>Cacheado</span></button>
+              <button class="choice" type="button" data-style="braid" data-style-name="com trança" aria-pressed="false"><span class="emoji">🪢</span><span>Trança</span></button>
+              <button class="choice" type="button" data-style="ponytail" data-style-name="com rabo de cavalo" aria-pressed="false"><span class="emoji">🎀</span><span>Rabo de cavalo</span></button>
             </div>
           </div>
           <div class="option-group">
@@ -474,7 +698,18 @@
 
         <div id="nail-controls" hidden>
           <div class="option-group">
-            <p class="group-title">Cor das patinhas</p>
+            <p class="group-title">Escolha uma unha para pintar</p>
+            <div class="nail-picker" id="nail-picker" aria-label="Escolha uma unha">
+              <button class="nail-pick" type="button" data-nail-index="0" aria-pressed="true"><span>💅</span><span>Unha 1</span></button>
+              <button class="nail-pick" type="button" data-nail-index="1" aria-pressed="false"><span>💅</span><span>Unha 2</span></button>
+              <button class="nail-pick" type="button" data-nail-index="2" aria-pressed="false"><span>💅</span><span>Unha 3</span></button>
+              <button class="nail-pick" type="button" data-nail-index="3" aria-pressed="false"><span>💅</span><span>Unha 4</span></button>
+              <button class="nail-pick" type="button" data-nail-index="4" aria-pressed="false"><span>💅</span><span>Unha 5</span></button>
+              <button class="nail-pick" type="button" data-nail-index="5" aria-pressed="false"><span>💅</span><span>Unha 6</span></button>
+            </div>
+          </div>
+          <div class="option-group">
+            <p class="group-title">Cor da unha escolhida</p>
             <div class="swatches" id="nail-colors" aria-label="Cores de esmalte">
               <button class="color-choice" type="button" style="--swatch:#ff8fae" data-color="#ff8fae" aria-label="Rosa" aria-pressed="true"></button>
               <button class="color-choice" type="button" style="--swatch:#ffcf67" data-color="#ffcf67" aria-label="Amarelo" aria-pressed="false"></button>
@@ -507,21 +742,32 @@
       const controlTitle = document.querySelector("#control-title");
       const controlHint = document.querySelector("#control-hint");
       const message = document.querySelector("#message");
+      const waitingRoom = document.querySelector("#waiting-room");
+      const salon = document.querySelector("#salon");
+      const salonStage = document.querySelector("#salon-stage");
+      const characterTitle = document.querySelector("#character-title");
+      const characterDescription = document.querySelector("#character-description");
       const hairControls = document.querySelector("#hair-controls");
       const nailControls = document.querySelector("#nail-controls");
       const hairBack = document.querySelector("#hair-back");
       const hairFront = document.querySelector("#hair-front");
       const accessory = document.querySelector("#hair-accessory");
+      const characterButtons = [...document.querySelectorAll("#character-picker [data-character]")];
+      const changeCharacterButton = document.querySelector("#change-character");
+      const startSalonButton = document.querySelector("#start-salon");
       const root = document.documentElement;
       const nails = [...document.querySelectorAll(".nail")];
       const decorations = document.querySelector(".nail-decoration-group");
-      const originalDecorations = decorations.innerHTML;
-      const originalHair = {
-        back: hairBack.innerHTML,
-        front: hairFront.innerHTML,
-        accessory: accessory.innerHTML
-      };
-
+      const characterRoster = [
+        { id: "lili", name: "Lili", description: "gatinha de pelo branquinho e cabelo castanho", fur: "#fffdfd", ear: "#f7b4c8", outfit: "#f7a7c4", outfitDetail: "#fff2f7", blush: "#ffc0ce", nose: "#ef91a9", eyes: "#60485c", hair: "#9a5b48", hairLight: "#c98770", bow: "#ffcf67", style: "long" },
+        { id: "bia", name: "Bia", description: "gatinha de pelo caramelo e cabelos cacheados", fur: "#b87953", ear: "#e8a487", outfit: "#83c9bd", outfitDetail: "#f1fffb", blush: "#dd967d", nose: "#bd7769", eyes: "#523747", hair: "#352b35", hairLight: "#6c535b", bow: "#f1a86c", style: "curls" },
+        { id: "nina", name: "Nina", description: "gatinha de pelo pêssego e cabelo lilás", fur: "#f1d3b8", ear: "#e9a9ba", outfit: "#a997e6", outfitDetail: "#f5f1ff", blush: "#eea9a5", nose: "#e59bad", eyes: "#564879", hair: "#8e72bd", hairLight: "#b7aaf5", bow: "#e58ab0", style: "pigtails" },
+        { id: "mel", name: "Mel", description: "gatinha de pelo lilás e cabelo dourado", fur: "#e2dfec", ear: "#bba9db", outfit: "#83c9a7", outfitDetail: "#f0fff5", blush: "#e7a8bd", nose: "#e49caf", eyes: "#514768", hair: "#d48a44", hairLight: "#f5c876", bow: "#ffcf67", style: "bun" }
+      ];
+      let selectedCharacter = "lili";
+      let hasEnteredSalon = false;
+      let selectedNail = 0;
+      let currentMode = "hair";
       const styleMarkup = {
         long: {
           back: '<path d="M73 179 Q57 100 104 62 Q122 21 178 35 Q232 15 267 62 Q312 89 290 173 L274 236 Q248 263 222 225 L137 233 Q109 275 82 238Z"/><path d="M92 80 Q109 31 142 41 Q123 73 123 111Z" class="hair-accent"/><path d="M246 52 Q282 67 284 111 Q265 97 248 104Z" class="hair-accent"/>',
@@ -542,8 +788,73 @@
           back: '<path d="M77 169 Q57 100 104 62 Q122 21 178 35 Q232 15 267 62 Q312 89 290 173 L274 219 Q248 245 222 211 L137 218 Q109 254 82 222Z"/><circle cx="178" cy="43" r="31"/><circle cx="180" cy="28" r="14" class="hair-accent"/><path d="M92 80 Q109 31 142 41 Q123 73 123 111Z" class="hair-accent"/>',
           front: '<path d="M91 132 Q86 54 151 45 Q231 24 272 93 Q247 80 225 94 Q193 109 165 90 Q132 125 91 132Z"/><path d="M105 99 Q125 55 163 53 Q137 78 135 106Z" class="hair-accent"/>',
           accessory: '<path d="M239 70 Q224 57 221 70 Q220 80 239 84 Q258 80 257 70 Q254 57 239 70Z" fill="#ffcf67" stroke="#e8a94d" stroke-width="2"/><circle cx="239" cy="73" r="4" fill="#fff5c8"/>'
+        },
+        bangs: {
+          back: '<path d="M73 179 Q57 100 104 62 Q122 21 178 35 Q232 15 267 62 Q312 89 290 173 L274 236 Q248 263 222 225 L137 233 Q109 275 82 238Z"/><path d="M92 80 Q109 31 142 41 Q123 73 123 111Z" class="hair-accent"/>',
+          front: '<path d="M91 133 Q86 54 151 45 Q231 24 272 93 L269 126 Q238 112 211 125 Q177 139 150 119 Q123 139 91 133Z"/><path d="M105 99 Q125 55 163 53 Q137 78 135 106Z" class="hair-accent"/>',
+          accessory: '<path d="M239 70 Q224 57 221 70 Q220 80 239 84 Q258 80 257 70 Q254 57 239 70Z" fill="#ffcf67" stroke="#e8a94d" stroke-width="2"/><circle cx="239" cy="73" r="4" fill="#fff5c8"/>'
+        },
+        curls: {
+          back: '<path d="M73 179 Q57 100 104 62 Q122 21 178 35 Q232 15 267 62 Q312 89 290 173 L274 220 Q248 245 222 211 L137 218 Q109 254 82 222Z"/><circle cx="94" cy="74" r="25"/><circle cx="126" cy="43" r="23"/><circle cx="161" cy="34" r="22"/><circle cx="198" cy="32" r="22"/><circle cx="235" cy="46" r="23"/><circle cx="271" cy="76" r="25"/><circle cx="82" cy="124" r="21"/><circle cx="278" cy="124" r="21"/><circle cx="101" cy="197" r="22"/><circle cx="259" cy="196" r="22"/>',
+          front: '<path d="M88 119 Q84 67 120 58 Q124 37 148 43 Q162 24 184 40 Q207 28 222 48 Q248 47 256 72 Q276 83 270 124 Q249 105 232 123 Q211 102 193 124 Q174 104 155 126 Q135 108 116 129Z"/><path d="M111 83 Q126 58 149 57 Q130 72 130 91Z" class="hair-accent"/>',
+          accessory: '<path d="M239 70 Q224 57 221 70 Q220 80 239 84 Q258 80 257 70 Q254 57 239 70Z" fill="#ffcf67" stroke="#e8a94d" stroke-width="2"/><circle cx="239" cy="73" r="4" fill="#fff5c8"/>'
+        },
+        braid: {
+          back: '<path d="M73 179 Q57 100 104 62 Q122 21 178 35 Q232 15 267 62 Q312 89 290 173 L274 220 Q248 245 222 211 L137 218 Q109 254 82 222Z"/><path d="M277 120 C315 134 279 150 301 165 C320 179 282 192 301 207 C317 222 285 235 292 247" class="braid"/><path d="M277 120 C315 134 279 150 301 165 C320 179 282 192 301 207 C317 222 285 235 292 247" class="braid-highlight"/>',
+          front: '<path d="M91 133 Q86 54 151 45 Q231 24 272 93 Q247 80 225 94 Q193 109 165 90 Q132 125 91 133Z"/><path d="M105 99 Q125 55 163 53 Q137 78 135 106Z" class="hair-accent"/>',
+          accessory: '<path d="M239 70 Q224 57 221 70 Q220 80 239 84 Q258 80 257 70 Q254 57 239 70Z" fill="#ffcf67" stroke="#e8a94d" stroke-width="2"/><circle cx="239" cy="73" r="4" fill="#fff5c8"/>'
+        },
+        ponytail: {
+          back: '<path d="M73 179 Q57 100 104 62 Q122 21 178 35 Q232 15 267 62 Q312 89 290 173 L274 220 Q248 245 222 211 L137 218 Q109 254 82 222Z"/><path d="M237 87 Q244 57 267 44 Q274 13 301 16 Q329 20 317 49 Q307 67 284 72 Q276 103 258 117Z"/><path d="M277 46 Q294 21 309 25 Q295 39 291 60Z" class="hair-accent"/>',
+          front: '<path d="M91 133 Q86 54 151 45 Q231 24 272 93 Q247 80 225 94 Q193 109 165 90 Q132 125 91 133Z"/><path d="M105 99 Q125 55 163 53 Q137 78 135 106Z" class="hair-accent"/>',
+          accessory: '<path d="M268 79 Q255 67 251 80 Q251 91 268 94 Q285 91 285 80 Q281 67 268 79Z" fill="#ffcf67" stroke="#e8a94d" stroke-width="2"/><circle cx="268" cy="83" r="4" fill="#fff5c8"/>'
         }
       };
+
+      const nailPositions = [[108, 349], [122, 356], [91, 355], [252, 349], [238, 356], [269, 355]];
+      const colorButtons = [...document.querySelectorAll("#nail-colors [data-color]")];
+      const decorationButtons = [...document.querySelectorAll("#nail-decorations [data-decoration]")];
+      const nailPickerButtons = [...document.querySelectorAll("#nail-picker [data-nail-index]")];
+      const hairStyleButtons = [...document.querySelectorAll("#hair-styles [data-style]")];
+      const hairColorButtons = [...document.querySelectorAll("#hair-colors [data-color]")];
+      const characterLooks = new Map(characterRoster.map((character) => [
+        character.id,
+        {
+          hairStyle: character.style,
+          hairColor: character.hair,
+          hairLight: character.hairLight,
+          nails: nails.map(() => ({ color: "#ff8fae", decoration: "shine" }))
+        }
+      ]));
+
+      function applyCharacter() {
+        const character = characterRoster.find((item) => item.id === selectedCharacter);
+        const look = characterLooks.get(selectedCharacter);
+        const style = styleMarkup[look.hairStyle];
+        root.style.setProperty("--fur-color", character.fur);
+        root.style.setProperty("--ear-color", character.ear);
+        root.style.setProperty("--dress-color", character.outfit);
+        root.style.setProperty("--dress-detail-color", character.outfitDetail);
+        root.style.setProperty("--blush-color", character.blush);
+        root.style.setProperty("--nose-color", character.nose);
+        root.style.setProperty("--eye-color", character.eyes);
+        root.style.setProperty("--hair-color", look.hairColor);
+        root.style.setProperty("--hair-light", look.hairLight);
+        root.style.setProperty("--bow-color", character.bow);
+        hairBack.innerHTML = style.back;
+        hairFront.innerHTML = style.front;
+        accessory.innerHTML = style.accessory;
+        hairStyleButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.style === look.hairStyle)));
+        hairColorButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.color === look.hairColor)));
+        characterTitle.textContent = `${character.name}, ${character.description}`;
+        characterDescription.textContent = `${character.name} está pronta para brincar de salão.`;
+        salonStage.setAttribute("aria-label", `${character.name} no salão`);
+        stageTitle.textContent = currentMode === "hair"
+          ? `Dia de cuidar do cabelo da ${character.name}!`
+          : `Dia de cuidar das patinhas da ${character.name}!`;
+        nails.forEach((_, index) => renderNail(index));
+        updateNailPanel();
+      }
 
       function selectOnly(button, group) {
         group.querySelectorAll("button").forEach((item) => {
@@ -551,84 +862,184 @@
         });
       }
 
+      function renderNail(index) {
+        const nail = nails[index];
+        const look = characterLooks.get(selectedCharacter).nails[index];
+        nail.style.setProperty("--nail-color", look.color);
+        const [x, y] = nailPositions[index];
+        const group = decorations.querySelector(`[data-nail-decoration="${index}"]`);
+        if (look.decoration === "none") {
+          group.innerHTML = "";
+          return;
+        }
+
+        if (look.decoration === "heart") {
+          group.innerHTML = `<path d="M${x} ${y + 2} C${x - 7} ${y - 3} ${x - 3} ${y - 8} ${x} ${y - 4} C${x + 3} ${y - 8} ${x + 7} ${y - 3} ${x} ${y + 2}Z" fill="#ff8db3"/>`;
+        } else if (look.decoration === "dots") {
+          group.innerHTML = `<circle cx="${x}" cy="${y}" r="2.8" fill="#ffffff"/>`;
+        } else {
+          group.innerHTML = `<path d="M${x} ${y - 4} L${x + 1} ${y - 1} L${x + 4} ${y} L${x + 1} ${y + 1} L${x} ${y + 4} L${x - 1} ${y + 1} L${x - 4} ${y} L${x - 1} ${y - 1}Z" fill="#fff2a8"/>`;
+        }
+      }
+
+      function updateNailPanel() {
+        const look = characterLooks.get(selectedCharacter).nails[selectedNail];
+        colorButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.color === look.color)));
+        decorationButtons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.decoration === look.decoration)));
+      }
+
+      function selectNail(index) {
+        selectedNail = index;
+        nails.forEach((nail, nailIndex) => {
+          nail.classList.toggle("is-selected", currentMode === "nails" && nailIndex === selectedNail);
+        });
+        nailPickerButtons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(Number(button.dataset.nailIndex) === selectedNail));
+        });
+        updateNailPanel();
+        message.textContent = `Agora vamos cuidar da unha ${selectedNail + 1} da ${characterRoster.find((item) => item.id === selectedCharacter).name}!`;
+      }
+
       function setMode(mode) {
         const isHair = mode === "hair";
+        currentMode = mode;
         tabs.forEach((tab) => tab.setAttribute("aria-pressed", String(tab.dataset.mode === mode)));
         hairControls.hidden = !isHair;
         nailControls.hidden = isHair;
-        stageTitle.textContent = isHair ? "Dia de cuidar do cabelo!" : "Dia de cuidar das patinhas!";
+        const character = characterRoster.find((item) => item.id === selectedCharacter);
+        stageTitle.textContent = isHair
+          ? `Dia de cuidar do cabelo da ${character.name}!`
+          : `Dia de cuidar das patinhas da ${character.name}!`;
         controlTitle.textContent = isHair ? "Meu cabelo" : "Minhas unhas";
-        controlHint.textContent = isHair ? "Toque no que você mais gostar." : "Vamos escolher uma cor bem bonita!";
-        message.textContent = isHair ? "Escolha um penteado para a Lili!" : "Escolha a cor das patinhas!";
+        controlHint.textContent = isHair ? "Toque no que você mais gostar." : "Escolha uma unha e pinte só ela!";
+        nails.forEach((nail, index) => nail.classList.toggle("is-selected", !isHair && index === selectedNail));
+        if (isHair) {
+          message.textContent = `Escolha um penteado para a ${character.name}!`;
+        } else {
+          updateNailPanel();
+          message.textContent = `Escolha uma unha da ${character.name} para começar!`;
+        }
       }
 
       tabs.forEach((tab) => tab.addEventListener("click", () => setMode(tab.dataset.mode)));
+
+      characterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          selectedCharacter = button.dataset.character;
+          characterButtons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+          startSalonButton.textContent = hasEnteredSalon ? "Voltar ao salão 💖" : "Escolher personagem 💖";
+        });
+      });
+
+      startSalonButton.addEventListener("click", () => {
+        applyCharacter();
+        waitingRoom.hidden = true;
+        salon.hidden = false;
+        changeCharacterButton.hidden = false;
+        hasEnteredSalon = true;
+        setMode(currentMode);
+      });
+
+      changeCharacterButton.addEventListener("click", () => {
+        waitingRoom.hidden = false;
+        salon.hidden = true;
+        changeCharacterButton.hidden = true;
+        startSalonButton.textContent = "Voltar ao salão 💖";
+      });
 
       document.querySelector("#hair-styles").addEventListener("click", (event) => {
         const button = event.target.closest("button[data-style]");
         if (!button) return;
         selectOnly(button, document.querySelector("#hair-styles"));
         const style = styleMarkup[button.dataset.style];
+        characterLooks.get(selectedCharacter).hairStyle = button.dataset.style;
         hairBack.innerHTML = style.back;
         hairFront.innerHTML = style.front;
         accessory.innerHTML = style.accessory;
-        message.textContent = `Que lindo! A Lili adorou o cabelo ${button.dataset.style === "bob" ? "curtinho" : button.textContent.trim().toLowerCase()}!`;
+        message.textContent = `Que lindo! A ${characterRoster.find((item) => item.id === selectedCharacter).name} adorou o cabelo ${button.dataset.styleName || button.textContent.trim().toLowerCase()}!`;
       });
 
       document.querySelector("#hair-colors").addEventListener("click", (event) => {
         const button = event.target.closest("button[data-color]");
         if (!button) return;
         selectOnly(button, document.querySelector("#hair-colors"));
+        characterLooks.get(selectedCharacter).hairColor = button.dataset.color;
+        characterLooks.get(selectedCharacter).hairLight = button.dataset.light;
         root.style.setProperty("--hair-color", button.dataset.color);
         root.style.setProperty("--hair-light", button.dataset.light);
-        message.textContent = `Uma cor linda para o cabelo da Lili!`;
+        message.textContent = `Uma cor linda para o cabelo da ${characterRoster.find((item) => item.id === selectedCharacter).name}!`;
       });
 
       document.querySelector("#nail-colors").addEventListener("click", (event) => {
         const button = event.target.closest("button[data-color]");
         if (!button) return;
-        selectOnly(button, document.querySelector("#nail-colors"));
-        nails.forEach((nail) => nail.style.setProperty("--nail-color", button.dataset.color));
-        message.textContent = "As patinhas ficaram coloridas. Que beleza!";
+        characterLooks.get(selectedCharacter).nails[selectedNail].color = button.dataset.color;
+        renderNail(selectedNail);
+        updateNailPanel();
+        message.textContent = `A unha ${selectedNail + 1} da ${characterRoster.find((item) => item.id === selectedCharacter).name} ficou colorida. Que beleza!`;
+      });
+
+      document.querySelector("#nail-picker").addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-nail-index]");
+        if (button) selectNail(Number(button.dataset.nailIndex));
+      });
+
+      const character = document.querySelector(".character");
+      character.addEventListener("click", (event) => {
+        const nail = event.target.closest(".nail");
+        if (nail) selectNail(Number(nail.dataset.nailIndex));
+      });
+
+      character.addEventListener("keydown", (event) => {
+        const nail = event.target.closest(".nail");
+        if (!nail || (event.key !== "Enter" && event.key !== " ")) return;
+        event.preventDefault();
+        selectNail(Number(nail.dataset.nailIndex));
+      });
+
+      nails.forEach((nail, index) => {
+        nail.setAttribute("role", "button");
+        nail.setAttribute("tabindex", "0");
+        nail.setAttribute("aria-label", `Selecionar unha ${index + 1}`);
       });
 
       document.querySelector("#nail-decorations").addEventListener("click", (event) => {
         const button = event.target.closest("button[data-decoration]");
         if (!button) return;
-        selectOnly(button, document.querySelector("#nail-decorations"));
-        const decoration = button.dataset.decoration;
-        if (decoration === "none") {
-          decorations.style.display = "none";
-        } else {
-          decorations.style.display = "";
-          const positions = [[108, 349], [122, 356], [91, 355], [252, 349], [238, 356], [269, 355]];
-          const fill = decoration === "shine" ? "#fff2a8" : decoration === "heart" ? "#ff8db3" : "#ffffff";
-          decorations.innerHTML = positions.map(([x, y]) => {
-            if (decoration === "heart") {
-              return `<path d="M${x} ${y + 2} C${x - 7} ${y - 3} ${x - 3} ${y - 8} ${x} ${y - 4} C${x + 3} ${y - 8} ${x + 7} ${y - 3} ${x} ${y + 2}Z" fill="${fill}"/>`;
-            }
-            if (decoration === "dots") return `<circle cx="${x}" cy="${y}" r="2.8" fill="${fill}"/>`;
-            return `<path d="M${x} ${y - 4} L${x + 1} ${y - 1} L${x + 4} ${y} L${x + 1} ${y + 1} L${x} ${y + 4} L${x - 1} ${y + 1} L${x - 4} ${y} L${x - 1} ${y - 1}Z" fill="${fill}"/>`;
-          }).join("");
-        }
-        message.textContent = decoration === "none" ? "Também fica lindo sem enfeites!" : "Um enfeite especial para as patinhas!";
+        characterLooks.get(selectedCharacter).nails[selectedNail].decoration = button.dataset.decoration;
+        renderNail(selectedNail);
+        updateNailPanel();
+        message.textContent = characterLooks.get(selectedCharacter).nails[selectedNail].decoration === "none"
+          ? `A unha ${selectedNail + 1} também fica linda sem enfeites!`
+          : `Um enfeite especial para a unha ${selectedNail + 1}!`;
       });
 
       document.querySelector("#reset").addEventListener("click", () => {
-        root.style.setProperty("--hair-color", "#9a5b48");
-        root.style.setProperty("--hair-light", "#c98770");
-        nails.forEach((nail) => nail.style.setProperty("--nail-color", "#ff8fae"));
-        decorations.style.display = "";
-        decorations.innerHTML = originalDecorations;
-        hairBack.innerHTML = originalHair.back;
-        hairFront.innerHTML = originalHair.front;
-        accessory.innerHTML = originalHair.accessory;
-        document.querySelectorAll(".choice, .color-choice").forEach((button) => {
+        characterRoster.forEach((character) => {
+          characterLooks.set(character.id, {
+            hairStyle: character.style,
+            hairColor: character.hair,
+            hairLight: character.hairLight,
+            nails: nails.map(() => ({ color: "#ff8fae", decoration: "shine" }))
+          });
+        });
+        selectedCharacter = "lili";
+        selectedNail = 0;
+        hasEnteredSalon = false;
+        characterButtons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.character === selectedCharacter));
+        });
+        startSalonButton.textContent = "Escolher personagem 💖";
+        changeCharacterButton.hidden = true;
+        waitingRoom.hidden = false;
+        salon.hidden = true;
+        document.querySelectorAll("#hair-styles .choice, #hair-colors .color-choice, #nail-decorations .choice, #nail-picker .nail-pick").forEach((button) => {
           button.setAttribute("aria-pressed", String(
-            button.dataset.style === "long" ||
-            button.dataset.color === "#9a5b48" ||
+            button.dataset.style === characterRoster[0].style ||
+            button.dataset.color === characterRoster[0].hair ||
             button.dataset.color === "#ff8fae" ||
-            button.dataset.decoration === "shine"
+            button.dataset.decoration === "shine" ||
+            button.dataset.nailIndex === "0"
           ));
         });
         setMode("hair");
